@@ -1,0 +1,24 @@
+name: CI Debug Builds
+on: [push, pull_request]
+
+jobs:
+  job:
+    name: CI Debug Build -- ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: run
+        shell: bash
+        run: |
+          cmake -H. -BBuild -DCMAKE_BUILD_TYPE=Debug
+          cmake --build Build --config Debug
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+      fail-fast: false

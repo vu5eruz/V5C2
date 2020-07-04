@@ -11,12 +11,13 @@ elseif(WIN32)
 endif()
 
 configure_file(
-    "${CMAKE_SOURCE_DIR}/src/main.h.in"
-    "${CMAKE_BINARY_DIR}/src/main.h"
+    "${CMAKE_SOURCE_DIR}/src/main/main.h.in"
+    "${CMAKE_BINARY_DIR}/src/main/main.h"
 )
 
-add_executable(v5c2 WIN32
-	"main.cpp"
+add_executable(v5c2
+    "entry.cpp"
+	"main/main.cpp"
 )
 
 set_target_properties(v5c2 PROPERTIES
@@ -29,17 +30,20 @@ set_target_properties(v5c2 PROPERTIES
     OUTPUT_NAME "v5c2"
 )
 
-target_compile_definitions(v5c2 PUBLIC
-    $<$<CXX_COMPILER_ID:MSVC>: UNICODE=1 _UNICODE=1 >
-)
-
 target_compile_options(v5c2 PUBLIC
     $<$<CXX_COMPILER_ID:MSVC>: /W4 >
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>: -Wall -Wextra -Wpedantic >
 )
 
 target_include_directories(v5c2 PUBLIC
+    "${CMAKE_SOURCE_DIR}/external/stb"
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_BINARY_DIR}/src"
 )
 
+target_link_libraries(v5c2 PUBLIC
+    glfw
+    glad
+    glm::glm
+    GSL
+)

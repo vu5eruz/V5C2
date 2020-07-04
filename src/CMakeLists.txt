@@ -19,8 +19,10 @@ add_executable(v5c2
     "entry.cpp"
     "client/main.cpp"
     "client/platform.cpp"
+    "client/texture.cpp"
 	"core/main.cpp"
     "core/network.cpp"
+    "core/stbs.cpp"
     "core/utils.cpp"
 )
 
@@ -28,9 +30,9 @@ set_target_properties(v5c2 PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY "${V5C2_BUILD_OUTPUT_DIR}"
+    LIBRARY_OUTPUT_DIRECTORY "${V5C2_BUILD_OUTPUT_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY "${V5C2_BUILD_OUTPUT_DIR}"
     OUTPUT_NAME "v5c2"
 )
 

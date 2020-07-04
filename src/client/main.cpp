@@ -7,8 +7,10 @@
 
 #include "client/main.h"
 #include "client/platform.h"
+#include "client/texture.h"
 
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
 
@@ -17,6 +19,7 @@ namespace v5c2::client
     namespace
     {
         GLFWwindow* g_MainWindow{};
+        TexturePtr g_LogoTxt{};
 
 
         void ErrorCallback(int code, const char* description)
@@ -58,11 +61,29 @@ namespace v5c2::client
         {
             throw std::runtime_error("OpenGL context loading failed");
         }
+
+        ::glEnable(GL_TEXTURE_2D);
+
+        ::glMatrixMode(GL_PROJECTION);
+        ::glLoadIdentity();
+        ::glOrtho(0, 800, 600, 0, -1.0, 1.0);
+
+        ::glMatrixMode(GL_MODELVIEW);
+        ::glLoadIdentity();
+
+        g_LogoTxt = std::make_shared<Texture>();
+        
+        Texture::Bind(g_LogoTxt.get());
+        g_LogoTxt->Image("images/V5c2Logo.png");
+        g_LogoTxt->Parameter(Texture::MinFilter, Texture::Linear);
+        g_LogoTxt->Parameter(Texture::MagFilter, Texture::Linear);
+        Texture::Bind(nullptr);
     }
 
 
     void UninitializeClient()
     {
+        g_LogoTxt.reset();
         ::glfwTerminate();
     }
 
@@ -77,13 +98,19 @@ namespace v5c2::client
     {
         ::glfwPollEvents();
 
+        ::glClearColor(0.06125, 0.06125, 0.06125, 1.0);
         ::glClear(GL_COLOR_BUFFER_BIT);
 
-        ::glBegin(GL_TRIANGLES);
-        ::glVertex2f(0.0f, 1.0f);
-        ::glVertex2f(1.0f, -1.0f);
-        ::glVertex2f(-1.0f, -1.0f);
+        Texture::Bind(g_LogoTxt.get());
+
+        ::glBegin(GL_QUADS);
+        ::glTexCoord2f(0.0f, 0.0f); ::glVertex2f(32, 32);
+        ::glTexCoord2f(1.0f, 0.0f); ::glVertex2f(32 + 128, 32);
+        ::glTexCoord2f(1.0f, 1.0f); ::glVertex2f(32 + 128, 32 + 128);
+        ::glTexCoord2f(0.0f, 1.0f); ::glVertex2f(32, 32 + 128);
         ::glEnd();
+
+        Texture::Bind(nullptr);
 
         ::glfwSwapBuffers(g_MainWindow);
     }

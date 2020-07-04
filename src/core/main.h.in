@@ -1,6 +1,6 @@
 //==========================================================
 //
-//  V5C2  --  src/main/main.h.in
+//  V5C2  --  src/core/main.h.in
 //
 //==========================================================
 
@@ -19,7 +19,7 @@
 #cmakedefine V5C2_PLATFORM_APPLE
 #cmakedefine V5C2_PLATFORM_WINDOWS
 
-namespace v5c2::main
+namespace v5c2::core
 {
     void Main();
 }

@@ -11,13 +11,13 @@ elseif(WIN32)
 endif()
 
 configure_file(
-    "${CMAKE_SOURCE_DIR}/src/main/main.h.in"
-    "${CMAKE_BINARY_DIR}/src/main/main.h"
+    "${CMAKE_SOURCE_DIR}/src/core/main.h.in"
+    "${CMAKE_BINARY_DIR}/src/core/main.h"
 )
 
 add_executable(v5c2
     "entry.cpp"
-	"main/main.cpp"
+	"core/main.cpp"
 )
 
 set_target_properties(v5c2 PROPERTIES

@@ -1,16 +1,16 @@
 //==========================================================
 //
-//  V5C2  --  src/main/main.cpp
+//  V5C2  --  src/core/main.cpp
 //
 //==========================================================
 
 
-#include "main/main.h"
+#include "core/main.h"
 
 #include <iostream>
 
 
-namespace v5c2::main
+namespace v5c2::core
 {
     void Main()
     {

@@ -5,6 +5,7 @@
 //==========================================================
 
 
+#include "client/main.h"
 #include "core/main.h"
 #include "core/network.h"
 
@@ -22,10 +23,12 @@ namespace v5c2::core
         void AppMain()
         {
             InitializeNetwork();
+            client::InitializeClient();
 
-            std::cout << "Network initialized successful\n";
+            std::cout << "Initialized successful\n";
             std::cin.get();
 
+            client::UninitializeClient();
             UninitializeNetwork();
         }
     }
@@ -62,8 +65,8 @@ namespace v5c2::core
             <<  Exc.what() << "\n"
                 "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
             << std::endl;
-        }
 
-        std::cin.get();
+            std::cin.get();
+        }
     }
 }

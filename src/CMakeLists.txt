@@ -17,8 +17,11 @@ configure_file(
 
 add_executable(v5c2
     "entry.cpp"
+    "client/main.cpp"
+    "client/platform.cpp"
 	"core/main.cpp"
     "core/network.cpp"
+    "core/utils.cpp"
 )
 
 set_target_properties(v5c2 PROPERTIES

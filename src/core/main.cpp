@@ -12,9 +12,6 @@
 #include <exception>
 #include <iostream>
 
-#define STB_SPRINTF_IMPLEMENTATION 1
-#include <stb_sprintf.h>
-
 
 namespace v5c2::core
 {

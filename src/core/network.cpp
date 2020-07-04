@@ -7,6 +7,7 @@
 
 #include "core/main.h"
 #include "core/network.h"
+#include "core/stbs.h"
 
 #ifdef V5C2_PLATFORM_WINDOWS
 #define WIN32_LEAN_AND_MEAN
@@ -18,7 +19,6 @@
 
 #include <stdexcept>
 
-#include <stb_sprintf.h>
 
 
 namespace v5c2::core

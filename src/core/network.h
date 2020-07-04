@@ -5,6 +5,9 @@
 //==========================================================
 
 
+#ifndef V5C2_NETWORK_H
+#define V5C2_NETWORK_H 1
+
 #include "core/main.h"
 
 #ifndef V5C2_PLATFORM_WINDOWS
@@ -38,3 +41,5 @@ namespace v5c2::core
 
     void UninitializeNetwork();
 }
+
+#endif // !V5C2_NETWORK_H

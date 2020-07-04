@@ -62,7 +62,10 @@ namespace v5c2::client
             throw std::runtime_error("OpenGL context loading failed");
         }
 
+        ::glEnable(GL_BLEND);
         ::glEnable(GL_TEXTURE_2D);
+
+        ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         ::glMatrixMode(GL_PROJECTION);
         ::glLoadIdentity();
@@ -98,7 +101,7 @@ namespace v5c2::client
     {
         ::glfwPollEvents();
 
-        ::glClearColor(0.06125, 0.06125, 0.06125, 1.0);
+        ::glClearColor(0.06125f, 0.06125f, 0.06125f, 1.0f);
         ::glClear(GL_COLOR_BUFFER_BIT);
 
         Texture::Bind(g_LogoTxt.get());

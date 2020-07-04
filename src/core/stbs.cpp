@@ -5,8 +5,9 @@
 //==========================================================
 
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
+#define STB_IMAGE_IMPLEMENTATION 1
+#define STB_RECT_PACK_IMPLEMENTATION 1
 #define STB_SPRINTF_IMPLEMENTATION 1
-#include <stb_sprintf.h>
+#define STB_TRUETYPE_IMPLEMENTATION 1
+
+#include "core/stbs.h"

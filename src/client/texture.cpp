@@ -14,6 +14,44 @@
 
 namespace v5c2::client
 {
+    namespace
+    {
+        constexpr GLenum GlEnumFromPixelFormat(PixelFormat Format)
+        {
+            switch (Format)
+            {
+                default:
+                case PixelFormat::Red: return GL_RED;
+                case PixelFormat::Green: return GL_GREEN;
+                case PixelFormat::Blue: return GL_BLUE;
+                case PixelFormat::Alpha: return GL_ALPHA;
+                case PixelFormat::Rgb: return GL_RGB;
+                case PixelFormat::Bgr: return GL_BGR;
+                case PixelFormat::RgbAlpha: return GL_RGBA;
+                case PixelFormat::BgrAlpha: return GL_BGRA;
+                case PixelFormat::Luminance: return GL_LUMINANCE;
+                case PixelFormat::LuminanceAlpha: return GL_LUMINANCE_ALPHA;
+            };
+        }
+
+
+        constexpr GLenum GlEnumFromPixelType(PixelType Type)
+        {
+            switch (Type)
+            {
+                default:
+                case PixelType::Uint8: return GL_UNSIGNED_BYTE;
+                case PixelType::Sint8: return GL_BYTE;
+                case PixelType::Uint16: return GL_UNSIGNED_SHORT;
+                case PixelType::Sint16: return GL_SHORT;
+                case PixelType::Uint32: return GL_UNSIGNED_INT;
+                case PixelType::Sint32: return GL_INT;
+                case PixelType::Float32: return GL_FLOAT;
+            }
+        }
+    }
+
+
     Texture::Texture()
     {
         ::glGenTextures(1, &m_TexId);
@@ -52,18 +90,50 @@ namespace v5c2::client
             throw std::runtime_error(Message);
         }
 
-        GLenum Format{};
+        PixelFormat Format{};
         switch (Components)
         {
-            case 1: Format = GL_LUMINANCE; break;
-            case 2: Format = GL_LUMINANCE_ALPHA; break;
-            case 3: Format = GL_RGB; break;
-            case 4: Format = GL_RGBA; break;
+            case 1: Format = PixelFormat::Luminance; break;
+            case 2: Format = PixelFormat::Luminance; break;
+            case 3: Format = PixelFormat::Rgb; break;
+            case 4: Format = PixelFormat::RgbAlpha; break;
         }
 
-        ::glTexImage2D(GL_TEXTURE_2D, 0, 4, Width, Height, 0, Format, GL_UNSIGNED_BYTE, Data);
+        Image(Width, Height, Format, PixelType::Uint8, Data);
 
         ::stbi_image_free(Data);
+    }
+
+
+    void Texture::Image(std::size_t Width, std::size_t Height, PixelFormat Format, PixelType Type, const void* Data)
+    {
+        ::glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            4,
+            static_cast<GLsizei>(Width),
+            static_cast<GLsizei>(Height),
+            0,
+            GlEnumFromPixelFormat(Format),
+            GlEnumFromPixelType(Type),
+            Data
+        );
+    }
+
+
+    void Texture::SubImage(std::size_t X, std::size_t Y, std::size_t Width, std::size_t Height, PixelFormat Format, PixelType Type, const void* Data)
+    {
+        ::glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            X,
+            Y,
+            static_cast<GLsizei>(Width),
+            static_cast<GLsizei>(Height),
+            GlEnumFromPixelFormat(Format),
+            GlEnumFromPixelType(Type),
+            Data
+        );
     }
 
 

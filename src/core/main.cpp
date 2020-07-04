@@ -25,8 +25,10 @@ namespace v5c2::core
             InitializeNetwork();
             client::InitializeClient();
 
-            std::cout << "Initialized successful\n";
-            std::cin.get();
+            while (client::IsRunning())
+            {
+                client::DoCycle();
+            }
 
             client::UninitializeClient();
             UninitializeNetwork();

@@ -11,6 +11,12 @@ jobs:
         with:
           submodules: true
 
+      - name: apt-get install
+        if: contains( matrix.os, 'ubuntu' )
+        shell: bash
+        run: |
+          sudo apt-get install -y xorg-dev
+
       - name: run
         shell: bash
         run: |

@@ -6,31 +6,63 @@
 
 
 #include "core/main.h"
+#include "core/network.h"
 
+#include <exception>
 #include <iostream>
+
+#define STB_SPRINTF_IMPLEMENTATION 1
+#include <stb_sprintf.h>
 
 
 namespace v5c2::core
 {
+    namespace
+    {
+        void AppMain()
+        {
+            InitializeNetwork();
+
+            std::cout << "Network initialized successful\n";
+            std::cin.get();
+
+            UninitializeNetwork();
+        }
+    }
+
     void Main()
     {
         std::ios::sync_with_stdio(false);
         std::cout <<
-        "V5C2\n"
-        "  vu5eruz's chess for two\n"
-        "  version " V5C2_VERSION " ("
+            "V5C2\n"
+            "  vu5eruz's chess for two\n"
+            "  version " V5C2_VERSION " ("
 #if defined(V5C2_PLATFORM_LINUX)
-        "Linux"
+            "Linux"
 #elif defined(V5C2_PLATFORM_APPLE)
-        "Mac OS"
+            "Mac OS"
 #elif defined(V5C2_PLATFORM_WINDOWS)
-        "Windows"
+            "Windows"
 #endif
-        ")\n"
+            ")\n"
 #ifdef V5C2_DEBUG
-        "  debug release\n"
+            "  debug release\n"
 #endif // V5C2_DEBUG
         << std::endl;
+
+        try
+        {
+            AppMain();
+        }
+        catch (const std::exception& Exc)
+        {
+            std::cerr <<
+                "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
+                "\nUNCAUGHT EXCEPTION:\n\n    "
+            <<  Exc.what() << "\n"
+                "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
+            << std::endl;
+        }
 
         std::cin.get();
     }

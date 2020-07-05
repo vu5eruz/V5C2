@@ -181,7 +181,7 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
         auto rightRanks{ states };
 
         leftRanks.transform.translate(-50.0f, 50.0f * index - 12.0f);
-        rightRanks.transform.translate(50.0f * 8, 50.0f * index - 12.0f);
+        rightRanks.transform.translate(50.0f * 8 - 16.0f, 50.0f * index - 12.0f);
 
         target.draw(rank, leftRanks);
         target.draw(rank, rightRanks);
@@ -195,8 +195,8 @@ void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
         auto upperFiles{ states };
         auto lowerFiles{ states };
 
-        upperFiles.transform.translate(50.0f * index, -50.0f - 12.0f);
-        lowerFiles.transform.translate(50.0f * index, 50.0f * 8 - 12.0f);
+        upperFiles.transform.translate(50.0f * index - 8.0f, -50.0f - 12.0f);
+        lowerFiles.transform.translate(50.0f * index - 8.0f, 50.0f * 8 - 12.0f);
 
         target.draw(file, upperFiles);
         target.draw(file, lowerFiles);

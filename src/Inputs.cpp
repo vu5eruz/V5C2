@@ -159,7 +159,7 @@ namespace
         }
 
         prompt.resize(64);
-        int ret{ std::snprintf(prompt.data(), prompt.size(), "move piece from %c%c to %c%c", c1, c2, c3, c4) };
+        int ret{ std::snprintf(prompt.data(), prompt.size(), "move piece at %c%c to %c%c", c1, c2, c3, c4) };
         prompt.erase(ret, std::string::npos);
         commandValid = str.length() == 5;
         return prompt;

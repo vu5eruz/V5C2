@@ -4,8 +4,12 @@ configure_file(
 )
 
 add_executable(v5c2
+    "Board.cpp"
+    "Inputs.cpp"
     "Main.cpp"
 )
+
+add_dependencies(v5c2 v5c2_data)
 
 set_target_properties(v5c2 PROPERTIES
     CXX_STANDARD 17

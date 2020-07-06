@@ -9,7 +9,7 @@ endif()
 
 project(
     V5C2
-    VERSION 0.2.0
+    VERSION 0.2.1
     DESCRIPTION "vu5eruz's chess for two"
     LANGUAGES CXX
 )

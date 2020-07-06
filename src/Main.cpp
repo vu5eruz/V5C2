@@ -64,9 +64,10 @@ namespace v5c2
 
             static const char* FragmentShaderSource =
                 "#version 120\n"
+                "uniform vec2 uCursorPos;"
                 "void main()\n"
                 "{\n"
-                "    float Hue = (gl_FragCoord.x*0.75  + gl_FragCoord.y*0.33) * 3.141592 / 100.0;"
+                "    float Hue = distance(gl_FragCoord.xy, uCursorPos) * 3.141592 / 125.0;\n"
                 "    float R = sin(Hue) * 0.5 + 0.5;\n"
                 "    float G = sin(Hue + 2.0*3.141592/3.0) * 0.5 + 0.5;\n"
                 "    float B = sin(Hue + 4.0*3.141592/3.0) * 0.5 + 0.5;\n"
@@ -96,6 +97,7 @@ namespace v5c2
             gl::DeleteShader(FragmentShader);
 
             m_aPosition = gl::GetAttribLocation(m_Program, "aPosition");
+            m_uCursorPos = gl::GetUniformLocation(m_Program, "uCursorPos");
         }
 
 
@@ -127,6 +129,11 @@ namespace v5c2
 
             gl::UseProgram(m_Program);
 
+            double X{}, Y{};
+            Engine::GetInstance().GetCursorPosition(X, Y);
+
+            gl::Uniform(m_uCursorPos, float(X), float(600.0 - Y));
+
             gl::DrawElements(gl::DrawElementsModeEnum::Triangles, 3, gl::DrawElementsTypeEnum::UInt, nullptr);
         }
 
@@ -136,6 +143,7 @@ namespace v5c2
         unsigned int m_Ibo{};
         unsigned int m_Program{};
         unsigned int m_aPosition{};
+        unsigned int m_uCursorPos{};
     };
 
 

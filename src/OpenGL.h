@@ -139,6 +139,30 @@ namespace v5c2::gl
 
     unsigned int GetAttribLocation(unsigned int Program, const char* Name);
 
+    unsigned int GetUniformLocation(unsigned int Program, const char* Name);
+
+    void Uniform(unsigned int UniformLoc, float V0);
+    void Uniform(unsigned int UniformLoc, float V0, float V1);
+    void Uniform(unsigned int UniformLoc, float V0, float V1, float V2);
+    void Uniform(unsigned int UniformLoc, float V0, float V1, float V2, float V3);
+
+    void Uniform(unsigned int UniformLoc, int V0);
+    void Uniform(unsigned int UniformLoc, int V0, int V1);
+    void Uniform(unsigned int UniformLoc, int V0, int V1, int V2);
+    void Uniform(unsigned int UniformLoc, int V0, int V1, int V2, int V3);
+
+    void Uniform1v(unsigned int UniformLoc, std::size_t Count, const float* Values);
+    void Uniform2v(unsigned int UniformLoc, std::size_t Count, const float* Values);
+    void Uniform3v(unsigned int UniformLoc, std::size_t Count, const float* Values);
+    void Uniform4v(unsigned int UniformLoc, std::size_t Count, const float* Values);
+
+    void Uniform1v(unsigned int UniformLoc, std::size_t Count, const int* Values);
+    void Uniform2v(unsigned int UniformLoc, std::size_t Count, const int* Values);
+    void Uniform3v(unsigned int UniformLoc, std::size_t Count, const int* Values);
+    void Uniform4v(unsigned int UniformLoc, std::size_t Count, const int* Values);
+
+    // TODO(vu5eruz): Matrix Uniforms
+
     void Clear();
 
 }

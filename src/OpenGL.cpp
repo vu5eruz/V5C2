@@ -356,14 +356,48 @@ namespace v5c2::gl
 
     unsigned int GetAttribLocation(unsigned int Program, const char* Name)
     {
-        GLint Attrib{ ::glGetAttribLocation(Program, Name) };
-        if (Attrib < 0)
+        GLint AttribLoc{ ::glGetAttribLocation(Program, Name) };
+        if (AttribLoc < 0)
         {
             ThrowOnError();
         }
 
-        return Attrib;
+        return AttribLoc;
     }
+
+
+    unsigned int GetUniformLocation(unsigned int Program, const char* Name)
+    {
+        GLint UniformLoc{ ::glGetUniformLocation(Program, Name) };
+        if (UniformLoc < 0)
+        {
+            ThrowOnError();
+        }
+
+        return UniformLoc;
+    }
+
+
+#define DEFINE_UNIFORM_FOR_VARIABLE(PARAMETERS, CALL) \
+    void Uniform PARAMETERS                           \
+    {                                                 \
+        CALL;                                         \
+        ThrowOnError();                               \
+    }
+
+
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0), ::glUniform1f(UniformLoc, V0));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1), ::glUniform2f(UniformLoc, V0, V1));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2), ::glUniform3f(UniformLoc, V0, V1, V2));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2, float V3), ::glUniform4f(UniformLoc, V0, V1, V2, V3));
+
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0), ::glUniform1i(UniformLoc, V0));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1), ::glUniform2i(UniformLoc, V0, V1));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2), ::glUniform3i(UniformLoc, V0, V1, V2));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2, int V3), ::glUniform4i(UniformLoc, V0, V1, V2, V3));
+
+
+#undef DEFINE_UNIFORM_FOR_VARIABLE
 
 
     void Clear()

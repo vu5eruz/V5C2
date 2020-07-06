@@ -19,23 +19,14 @@
 ////////////////////////////////////////////////////////////
 
 
+#include "Engine.h"
 #include "Main.h"
+#include "State.h"
 
-#ifdef V5C2_PLATFORM_WINDOWS
-#define WIN32_LEAN_AND_MEAN
-#include <tchar.h>
-#include <windows.h>
-#endif // V5C2_PLATFORM_WINDOWS
-
-#include <glad/glad.h>
-
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
-#include <cstddef>
-#include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
 
 namespace v5c2
@@ -43,47 +34,27 @@ namespace v5c2
 
     void Main()
     {
-        if (!glfwInit())
-        {
-            throw std::runtime_error("GLFW: Could not initialize library");
-        }
+        Engine Eng{};
+        Engine::SetInstance(Eng);
 
-        auto* Window{ glfwCreateWindow(800, 600, "V5C2", nullptr, nullptr) };
-        if (!Window)
-        {
-            throw std::runtime_error("GLFW: Could not create window");
-        }
-
-        glfwMakeContextCurrent(Window);
-
-        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
-        {
-            throw std::runtime_error("OpenGL: Could initialize context");
-        }
-
-        glfwSwapInterval(1);
-
-        while (!glfwWindowShouldClose(Window))
-        {
-            glfwPollEvents();
-
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            glfwSwapBuffers(Window);
-        }
-
-        glfwTerminate();
+        Eng.SetRunning(true);
+        Eng.SetState(std::make_unique<State>());
+        Eng.Run();
     }
 
 }
 
 
 #ifdef V5C2_PLATFORM_WINDOWS
-int APIENTRY _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+int APIENTRY WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #else
 int main(int, char**)
 #endif
 {
+    int ExitStatus{ EXIT_SUCCESS };
+
     try
     {
         v5c2::Main();
@@ -95,7 +66,9 @@ int main(int, char**)
             "\nUncaught Exception:\n\n\t" << Exc.what() << "\n"
             "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
             << std::endl;
+
+        ExitStatus = EXIT_FAILURE;
     }
 
-    return 0;
+    return ExitStatus;
 }

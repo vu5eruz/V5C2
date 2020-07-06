@@ -19,26 +19,17 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef V5C2_MAIN_H
-#define V5C2_MAIN_H 1
+#include "OpenGL.h"
 
-#define V5C2_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
-#define V5C2_VERSION_MINOR @PROJECT_VERSION_MINOR@
-#define V5C2_VERSION_PATCH @PROJECT_VERSION_PATCH@
-#define V5C2_VERSION "@PROJECT_VERSION@"
+#include <glad/glad.h>
 
-#cmakedefine V5C2_DEBUG
 
-#cmakedefine V5C2_PLATFORM_LINUX
-#cmakedefine V5C2_PLATFORM_MACOSX
-#cmakedefine V5C2_PLATFORM_UNIX
-#cmakedefine V5C2_PLATFORM_WINDOWS
-
-namespace v5c2
+namespace v5c2::gl
 {
 
-    void Main();
+    void Clear()
+    {
+        ::glClear(GL_COLOR_BUFFER_BIT);
+    }
 
 }
-
-#endif // !V5C2_MAIN_H

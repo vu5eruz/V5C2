@@ -19,26 +19,14 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef V5C2_MAIN_H
-#define V5C2_MAIN_H 1
+#ifndef V5C2_OPENGL_H
+#define V5C2_OPENGL_H 1
 
-#define V5C2_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
-#define V5C2_VERSION_MINOR @PROJECT_VERSION_MINOR@
-#define V5C2_VERSION_PATCH @PROJECT_VERSION_PATCH@
-#define V5C2_VERSION "@PROJECT_VERSION@"
-
-#cmakedefine V5C2_DEBUG
-
-#cmakedefine V5C2_PLATFORM_LINUX
-#cmakedefine V5C2_PLATFORM_MACOSX
-#cmakedefine V5C2_PLATFORM_UNIX
-#cmakedefine V5C2_PLATFORM_WINDOWS
-
-namespace v5c2
+namespace v5c2::gl
 {
 
-    void Main();
+    void Clear();
 
 }
 
-#endif // !V5C2_MAIN_H
+#endif // !V5C2_OPENGL_H

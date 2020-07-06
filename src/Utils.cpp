@@ -19,26 +19,41 @@
 ////////////////////////////////////////////////////////////
 
 
-#ifndef V5C2_MAIN_H
-#define V5C2_MAIN_H 1
+#include "Main.h"
+#include "Utils.h"
 
-#define V5C2_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
-#define V5C2_VERSION_MINOR @PROJECT_VERSION_MINOR@
-#define V5C2_VERSION_PATCH @PROJECT_VERSION_PATCH@
-#define V5C2_VERSION "@PROJECT_VERSION@"
+#ifdef V5C2_PLATFORM_UNIX
+#include <sys/time.h>
+#include <unistd.h>
+#include <errno.h>
+#endif
 
-#cmakedefine V5C2_DEBUG
+#ifdef V5C2_PLATFORM_WINDOWS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
 
-#cmakedefine V5C2_PLATFORM_LINUX
-#cmakedefine V5C2_PLATFORM_MACOSX
-#cmakedefine V5C2_PLATFORM_UNIX
-#cmakedefine V5C2_PLATFORM_WINDOWS
 
-namespace v5c2
+namespace v5c2::utils
 {
 
-    void Main();
+    void Sleep(unsigned int Duration)
+    {
+#if defined(V5C2_PLATFORM_WINDOWS)
+        ::Sleep(Duration);
+#elif defined(V5C2_PLATFORM_UNIX)
+        struct timespec Req{}, Rem{};
+
+        Req.tv_sec = static_cast<long>(Duration / 1000);
+        Req.tv_nsec = static_cast<long>(Duration % 1000) * 1000000l;
+
+        while (::nanosleep(&Req, &Rem) && (errno == EINTR))
+        {
+            Req = Rem;
+        }
+#else
+#error "Implement v5c2::utils::Sleep for this platform"
+#endif
+    }
 
 }
-
-#endif // !V5C2_MAIN_H

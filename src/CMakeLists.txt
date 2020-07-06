@@ -6,7 +6,11 @@ configure_file(
 )
 
 add_executable(v5c2
+    "Engine.cpp"
     "Main.cpp"
+    "OpenGL.cpp"
+    "State.cpp"
+    "Utils.cpp"
 )
 
 set_target_properties(v5c2 PROPERTIES

@@ -22,6 +22,7 @@
 #include "Engine.h"
 #include "Main.h"
 #include "State.h"
+#include "Stbs.h"
 #include "Utils.h"
 
 #include <glad/glad.h>
@@ -37,6 +38,33 @@
 
 namespace v5c2
 {
+
+    namespace
+    {
+
+        void SetWindowIcon(GLFWwindow* Window, const char* Path)
+        {
+            int Width{}, Height{}, Channels{4};
+            unsigned char* Pixels{ ::stbi_load(Path, &Width, &Height, &Channels, 4) };
+            if (Pixels == nullptr)
+            {
+                char Message[512];
+                ::stbsp_snprintf(Message, sizeof(Message), "Engine :  Could not open %s :  %s", Path, ::stbi_failure_reason());
+                throw std::runtime_error(Message);
+            }
+
+            GLFWimage Icon{};
+            Icon.width = Width;
+            Icon.height = Height;
+            Icon.pixels = Pixels;
+
+            ::glfwSetWindowIcon(Window, 1, &Icon);
+
+            ::stbi_image_free(Pixels);
+        }
+
+    }
+
 
     Engine* Engine::GlobalInstance{};
 
@@ -61,6 +89,8 @@ namespace v5c2
         {
             throw std::runtime_error("Engine :  GLFW :  Could not create window");
         }
+
+        SetWindowIcon(m_Window, "images/V5c2Icon.png");
 
         ::glfwMakeContextCurrent(m_Window);
 

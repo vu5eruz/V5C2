@@ -10,8 +10,11 @@ add_executable(v5c2
     "Main.cpp"
     "OpenGL.cpp"
     "State.cpp"
+    "Stbs.cpp"
     "Utils.cpp"
 )
+
+add_dependencies(v5c2 v5c2_data)
 
 set_target_properties(v5c2 PROPERTIES
     CXX_STANDARD 17
@@ -30,6 +33,7 @@ target_compile_options(v5c2 PUBLIC
 )
 
 target_include_directories(v5c2 PUBLIC
+    "${CMAKE_SOURCE_DIR}/external/stb"
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_BINARY_DIR}/src"
 )

@@ -29,13 +29,16 @@
 
 #cmakedefine V5C2_DEBUG
 
-#cmakedefine V5C2_PLATFORM_ANDROID
-#cmakedefine V5C2_PLATFORM_FREEBSD
-#cmakedefine V5C2_PLATFORM_IOS
 #cmakedefine V5C2_PLATFORM_LINUX
 #cmakedefine V5C2_PLATFORM_MACOSX
-#cmakedefine V5C2_PLATFORM_OPENBSD
 #cmakedefine V5C2_PLATFORM_UNIX
 #cmakedefine V5C2_PLATFORM_WINDOWS
+
+namespace v5c2
+{
+
+    void Main();
+
+}
 
 #endif // V5C2_MAIN_H

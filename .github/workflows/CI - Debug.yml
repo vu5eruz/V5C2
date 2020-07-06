@@ -1,0 +1,33 @@
+# V5C2 — GitHub Workflow for Debug Builds
+
+name: CI — Debug
+on: [push, pull_request]
+
+jobs:
+    build:
+        name: CI — Debug — ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                submodules: true
+
+            - name: apt-get install
+              if: contains( matrix.os, 'ubuntu' )
+              shell: bash
+              run: |
+                sudo apt-get install -y libxrandr-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev
+
+            - name: run
+              shell: bash
+              run: |
+                mkdir build && cd build
+                cmake .. -DCMAKE_BUILD_TYPE=Debug
+                cmake --build . --config Debug
+
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest, windows-latest]
+
+            fail-fast: false

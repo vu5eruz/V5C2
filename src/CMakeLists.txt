@@ -1,15 +1,13 @@
+# V5C2 — data/CMakeLists.txt
+
 configure_file(
     "${CMAKE_SOURCE_DIR}/src/Main.h.in"
     "${CMAKE_BINARY_DIR}/src/Main.h"
 )
 
 add_executable(v5c2
-    "Board.cpp"
-    "Inputs.cpp"
     "Main.cpp"
 )
-
-add_dependencies(v5c2 v5c2_data)
 
 set_target_properties(v5c2 PROPERTIES
     CXX_STANDARD 17
@@ -33,13 +31,5 @@ target_include_directories(v5c2 PUBLIC
 )
 
 target_link_libraries(v5c2 PUBLIC
-    sfml-audio
-    sfml-graphics
-    sfml-network
-    sfml-system
-    sfml-window
+    glfw
 )
-
-if(WIN32)
-    target_link_libraries(v5c2 PUBLIC sfml-main)
-endif()

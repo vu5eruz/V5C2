@@ -24,8 +24,9 @@
 
 #ifdef V5C2_PLATFORM_UNIX
 #include <sys/time.h>
-#include <unistd.h>
 #include <errno.h>
+#include <time.h>
+#include <unistd.h>
 #endif
 
 #ifdef V5C2_PLATFORM_WINDOWS

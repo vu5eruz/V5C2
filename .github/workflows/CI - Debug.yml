@@ -23,14 +23,14 @@ jobs:
               shell: bash
               run: |
                 mkdir build && cd build
-                cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=install
+                cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=output
                 cmake --build . --config Debug
-                cpack -G "ZIP" -C Debug -V
+                cmake --build . --config Debug --target install
                 
             - uses: actions/upload-artifact@v2
               with:
-                name: Debug Build for ${{ matrix.os }}
-                path: build/V5C2-*.zip
+                name: V5C2 (Debug) (${{ matrix.os }})
+                path: build/output/V5C2
 
         strategy:
             matrix:

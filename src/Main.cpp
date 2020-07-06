@@ -130,7 +130,7 @@ namespace v5c2
             gl::UseProgram(m_Program);
 
             double X{}, Y{};
-            Engine::GetInstance().GetCursorPosition(X, Y);
+            Engine::GetCursorPosition(X, Y);
 
             gl::Uniform(m_uCursorPos, float(X), float(600.0 - Y));
 
@@ -149,14 +149,11 @@ namespace v5c2
 
     void Main()
     {
-        Engine Eng{};
-        Engine::SetInstance(Eng);
+        Engine::InitializerManager EngineInitM{};
 
-        auto StatePtr{ std::make_unique<MainState>() };
-
-        Eng.SetRunning(true);
-        Eng.SetState(std::move(StatePtr));
-        Eng.Run();
+        Engine::SetRunning(true);
+        Engine::SetState(std::make_unique<MainState>());
+        Engine::Mainloop();
     }
 
 }

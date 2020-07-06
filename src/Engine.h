@@ -24,55 +24,47 @@
 
 #include <memory>
 
-// Dangerous forward declaration
-// Anything to avoid including <GLFW/glfw3.h> here
-struct GLFWwindow;
 
 namespace v5c2
 {
 
     class State;
 
+    using StatePtr = std::unique_ptr<State>;
+
     class Engine
     {
-        friend class State;
+        static void Initialize();
+
+        static void Finalize();
 
     public:
 
-        Engine();
+        struct InitializerManager
+        {
+            inline InitializerManager()
+            {
+                Engine::Initialize();
+            }
 
-        ~Engine();
 
-        void Run();
+            inline ~InitializerManager()
+            {
+                Engine::Finalize();
+            }
+        };
 
-        void GetCursorPosition(double& X, double& Y);
+        static void GetCursorPosition(double& X, double& Y);
 
-        void SetCursorPosition(double X, double Y);
+        static void SetCursorPosition(double& X, double& Y);
 
-        static inline Engine& GetInstance() { return *GlobalInstance; }
+        static bool GetRunning();
 
-        static inline void SetInstance(Engine& Instance) { GlobalInstance = &Instance; }
+        static void SetRunning(bool Running);
 
-        inline bool IsRunning() const { return m_IsRunning; }
+        static void SetState(StatePtr&& NewState);
 
-        inline void SetRunning(bool Running) { m_IsRunning = Running; }
-
-        void SetState(std::unique_ptr<State>&& NewState);
-
-    private:
-
-        void DispatchUpdates();
-
-        void DispatchDraw();
-
-        static void ErrorCallback(int Error, const char* Description);
-
-        bool m_IsRunning{};
-        GLFWwindow* m_Window{};
-        std::unique_ptr<State> m_CurrentState{};
-        std::unique_ptr<State> m_PendingState{};
-
-        static Engine* GlobalInstance;
+        static void Mainloop();
     };
 
 }

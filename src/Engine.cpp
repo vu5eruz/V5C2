@@ -42,134 +42,141 @@ namespace v5c2
     namespace
     {
 
-        void SetWindowIcon(GLFWwindow* Window, const char* Path)
+        bool g_Running{ false };
+        StatePtr g_CurrentState{};
+        StatePtr g_PendingState{};
+        GLFWwindow* g_Window{};
+
+
+        void ErrorCallback(int Error, const char* Description)
         {
-            int Width{}, Height{}, Channels{4};
-            unsigned char* Pixels{ ::stbi_load(Path, &Width, &Height, &Channels, 4) };
-            if (Pixels == nullptr)
+            std::cerr << "Engine :  GLFW :  Error (" << Error << ") :\n\t" << Description << std::endl;
+        }
+
+
+    }
+
+
+    void Engine::Initialize()
+    {
+        try
+        {
+            ::glfwSetErrorCallback(ErrorCallback);
+
+            if (!::glfwInit())
             {
-                char Message[512];
-                ::stbsp_snprintf(Message, sizeof(Message), "Engine :  Could not open %s :  %s", Path, ::stbi_failure_reason());
-                throw std::runtime_error(Message);
+                throw std::runtime_error("Engine :  GLFW :  Could not initialize library");
             }
 
-            GLFWimage Icon{};
-            Icon.width = Width;
-            Icon.height = Height;
-            Icon.pixels = Pixels;
+            ::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+            ::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+            ::glfwWindowHint(GLFW_DEPTH_BITS, 0);
+            ::glfwWindowHint(GLFW_STENCIL_BITS, 0);
+            ::glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-            ::glfwSetWindowIcon(Window, 1, &Icon);
-
-            ::stbi_image_free(Pixels);
-        }
-
-    }
-
-
-    Engine* Engine::GlobalInstance{};
-
-
-    Engine::Engine() try
-    {
-        ::glfwSetErrorCallback(Engine::ErrorCallback);
-
-        if (!::glfwInit())
-        {
-            throw std::runtime_error("Engine :  GLFW :  Could not initialize library");
-        }
-
-        ::glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-        ::glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-        ::glfwWindowHint(GLFW_DEPTH_BITS, 0);
-        ::glfwWindowHint(GLFW_STENCIL_BITS, 0);
-        ::glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-        m_Window = ::glfwCreateWindow(800, 600, "V5C2 " V5C2_VERSION, nullptr, nullptr);
-        if (m_Window == nullptr)
-        {
-            throw std::runtime_error("Engine :  GLFW :  Could not create window");
-        }
-
-        SetWindowIcon(m_Window, "images/V5c2Icon.png");
-
-        ::glfwMakeContextCurrent(m_Window);
-
-        if (!::gladLoadGLLoader(reinterpret_cast<GLADloadproc>(::glfwGetProcAddress)))
-        {
-            throw std::runtime_error("Engine :  OpenGL :  Could not initialize context");
-        }
-
-        ::glfwSwapInterval(1);
-    }
-    catch (...)
-    {
-        ::glfwDestroyWindow(m_Window);
-        ::glfwTerminate();
-
-        throw;
-    }
-
-
-    Engine::~Engine()
-    {
-        ::glfwTerminate();
-    }
-
-
-    void Engine::Run()
-    {
-        while (IsRunning() && !::glfwWindowShouldClose(m_Window))
-        {
-            if (m_PendingState)
+            g_Window = ::glfwCreateWindow(800, 600, "V5C2 " V5C2_VERSION, nullptr, nullptr);
+            if (g_Window == nullptr)
             {
-                m_CurrentState = std::move(m_PendingState);
+                throw std::runtime_error("Engine :  GLFW :  Could not create window");
             }
 
-            ::glfwPollEvents();
+            {
+                const char* Path{ "images/V5c2Icon.png" };
+                int Width{}, Height{}, Channels{ 4 };
+                unsigned char* Pixels{ ::stbi_load(Path, &Width, &Height, &Channels, 4) };
+                if (Pixels == nullptr)
+                {
+                    char Message[512];
+                    ::stbsp_snprintf(Message, sizeof(Message), "Engine :  Could not open %s :  %s", Path, ::stbi_failure_reason());
+                    throw std::runtime_error(Message);
+                }
 
-            DispatchUpdates();
+                GLFWimage Icon{};
+                Icon.width = Width;
+                Icon.height = Height;
+                Icon.pixels = Pixels;
 
-            DispatchDraw();
+                ::glfwSetWindowIcon(g_Window, 1, &Icon);
 
-            ::glfwSwapBuffers(m_Window);
+                ::stbi_image_free(Pixels);
+            }
 
-            utils::Sleep(1000 / 60);
+            ::glfwMakeContextCurrent(g_Window);
+
+            if (!::gladLoadGLLoader(reinterpret_cast<GLADloadproc>(::glfwGetProcAddress)))
+            {
+                throw std::runtime_error("Engine :  OpenGL :  Could not initialize context");
+            }
+
+            ::glfwSwapInterval(1);
         }
+        catch (...)
+        {
+            ::glfwTerminate();
+
+            throw;
+        }
+    }
+
+
+    void Engine::Finalize()
+    {
+        g_PendingState.reset();
+        g_CurrentState.reset();
+
+        ::glfwTerminate();
     }
 
 
     void Engine::GetCursorPosition(double& X, double& Y)
     {
-        ::glfwGetCursorPos(m_Window, &X, &Y);
+        ::glfwGetCursorPos(g_Window, &X, &Y);
     }
 
 
-    void Engine::SetCursorPosition(double X, double Y)
+    void Engine::SetCursorPosition(double& X, double& Y)
     {
-        ::glfwSetCursorPos(m_Window, X, Y);
+        ::glfwSetCursorPos(g_Window, X, Y);
     }
 
 
-    void Engine::SetState(std::unique_ptr<State>&& NewState)
+    bool Engine::GetRunning()
     {
-        m_PendingState = std::move(NewState);
+        return g_Running;
     }
 
 
-    void Engine::DispatchUpdates()
+    void Engine::SetRunning(bool Running)
     {
-        m_CurrentState->HandleUpdate(1.0 / 60.0);
+        g_Running = Running;
     }
 
 
-    void Engine::DispatchDraw()
+    void Engine::SetState(StatePtr&& NewState)
     {
-        m_CurrentState->HandleDraw();
+        g_PendingState = std::move(NewState);
     }
 
 
-    void Engine::ErrorCallback(int Error, const char* Description)
+    void Engine::Mainloop()
     {
-        std::cerr << "Engine :  GLFW :  Error (" << Error << ") :\n\t" << Description << std::endl;
+        while (g_Running && !::glfwWindowShouldClose(g_Window))
+        {
+            if (g_PendingState)
+            {
+                g_CurrentState = std::move(g_PendingState);
+            }
+
+            ::glfwPollEvents();
+
+            g_CurrentState->HandleUpdate(1.0 / 60.0);
+
+            g_CurrentState->HandleDraw();
+
+            ::glfwSwapBuffers(g_Window);
+
+            utils::Sleep(1000 / 60);
+        }
     }
+
 }

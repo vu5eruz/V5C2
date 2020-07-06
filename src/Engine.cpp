@@ -108,6 +108,18 @@ namespace v5c2
     }
 
 
+    void Engine::GetCursorPosition(double& X, double& Y)
+    {
+        ::glfwGetCursorPos(m_Window, &X, &Y);
+    }
+
+
+    void Engine::SetCursorPosition(double X, double Y)
+    {
+        ::glfwSetCursorPos(m_Window, X, Y);
+    }
+
+
     void Engine::SetState(std::unique_ptr<State>&& NewState)
     {
         m_PendingState = std::move(NewState);

@@ -45,11 +45,15 @@ namespace v5c2
 
         void Run();
 
+        void GetCursorPosition(double& X, double& Y);
+
+        void SetCursorPosition(double X, double Y);
+
         static inline Engine& GetInstance() { return *GlobalInstance; }
 
         static inline void SetInstance(Engine& Instance) { GlobalInstance = &Instance; }
 
-        inline bool IsRunning() { return m_IsRunning; }
+        inline bool IsRunning() const { return m_IsRunning; }
 
         inline void SetRunning(bool Running) { m_IsRunning = Running; }
 

@@ -2,17 +2,17 @@
 //
 // V5C2 — Vu5eruz's Chess For Two
 // Copyright (C) 2020 vu5eruz (undefined@disroot.org)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
@@ -68,6 +68,7 @@ namespace v5c2::gl
                     Message += "\n\tCommand would cause a stack underflow";
                     break;
 
+                default:
                 case GetErrorEnum::UnknownError:
                     Message += "\n\tUnknown Error";
                     break;
@@ -111,7 +112,7 @@ namespace v5c2::gl
             case VertexAttribPointerTypeEnum::Double: TypeInGL = GL_DOUBLE; break;
         }
 
-        ::glVertexAttribPointer(Index, Size, TypeInGL, Normalized, Stride, Pointer);
+        ::glVertexAttribPointer(Index, Size, TypeInGL, Normalized, static_cast<GLsizei>(Stride), Pointer);
 
         ThrowOnError();
     }
@@ -156,7 +157,7 @@ namespace v5c2::gl
             case DrawElementsTypeEnum::UInt: TypeInGL = GL_UNSIGNED_INT; break;
         }
 
-        ::glDrawElements(ModeInGL, Count, TypeInGL, Indices);
+        ::glDrawElements(ModeInGL, static_cast<GLsizei>(Count), TypeInGL, Indices);
     }
 
 
@@ -386,15 +387,15 @@ namespace v5c2::gl
     }
 
 
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0), ::glUniform1f(UniformLoc, V0));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1), ::glUniform2f(UniformLoc, V0, V1));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2), ::glUniform3f(UniformLoc, V0, V1, V2));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2, float V3), ::glUniform4f(UniformLoc, V0, V1, V2, V3));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0), ::glUniform1f(UniformLoc, V0))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1), ::glUniform2f(UniformLoc, V0, V1))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2), ::glUniform3f(UniformLoc, V0, V1, V2))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, float V0, float V1, float V2, float V3), ::glUniform4f(UniformLoc, V0, V1, V2, V3))
 
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0), ::glUniform1i(UniformLoc, V0));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1), ::glUniform2i(UniformLoc, V0, V1));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2), ::glUniform3i(UniformLoc, V0, V1, V2));
-    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2, int V3), ::glUniform4i(UniformLoc, V0, V1, V2, V3));
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0), ::glUniform1i(UniformLoc, V0))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1), ::glUniform2i(UniformLoc, V0, V1))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2), ::glUniform3i(UniformLoc, V0, V1, V2))
+    DEFINE_UNIFORM_FOR_VARIABLE((unsigned int UniformLoc, int V0, int V1, int V2, int V3), ::glUniform4i(UniformLoc, V0, V1, V2, V3))
 
 
 #undef DEFINE_UNIFORM_FOR_VARIABLE

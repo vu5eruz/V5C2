@@ -27,6 +27,8 @@
 #include <windows.h>
 #endif // V5C2_PLATFORM_WINDOWS
 
+#include <glad/glad.h>
+
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
@@ -53,15 +55,19 @@ namespace v5c2
         }
 
         glfwMakeContextCurrent(Window);
-        glfwSwapInterval(1);
 
-        auto Clear{ (void(*)(std::uint32_t))(glfwGetProcAddress("glClear")) };
+        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+        {
+            throw std::runtime_error("OpenGL: Could initialize context");
+        }
+
+        glfwSwapInterval(1);
 
         while (!glfwWindowShouldClose(Window))
         {
             glfwPollEvents();
 
-            Clear(0x00004000);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             glfwSwapBuffers(Window);
         }
@@ -88,7 +94,7 @@ int main(int, char**)
             "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
             "\nUncaught Exception:\n\n\t" << Exc.what() << "\n"
             "\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"
-        << std::endl;
+            << std::endl;
     }
 
     return 0;

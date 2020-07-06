@@ -34,10 +34,16 @@ else()
 endif()
 
 
+set(GLAD_PROFILE "compatibility" CACHE STRING "" FORCE)
+set(GLAD_API "gl=2.1" CACHE STRING "" FORCE)
+set(GLAD_GENERATOR "c" CACHE STRING "" FORCE)
+set(GLAD_SPEC "gl" CACHE STRING "" FORCE)
+
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
+add_subdirectory(external/glad)
 add_subdirectory(external/glfw)
 
 

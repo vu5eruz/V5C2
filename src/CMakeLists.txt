@@ -31,5 +31,6 @@ target_include_directories(v5c2 PUBLIC
 )
 
 target_link_libraries(v5c2 PUBLIC
+    glad
     glfw
 )

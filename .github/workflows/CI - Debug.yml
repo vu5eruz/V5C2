@@ -17,7 +17,7 @@ jobs:
               if: contains( matrix.os, 'ubuntu' )
               shell: bash
               run: |
-                sudo apt-get install -y libxrandr-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev
+                sudo apt-get install -y xorg-dev libwayland-dev libosmesa6-dev
 
             - name: run
               shell: bash

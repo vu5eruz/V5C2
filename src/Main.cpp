@@ -177,7 +177,7 @@ int main(int, char**)
             << std::endl;
 
 #if defined(V5C2_PLATFORM_WINDOWS) && defined(V5C2_DEBUG)
-        ::FatalAppExitA(0, Exc.what());
+        ::MessageBoxA(nullptr, Exc.what(), "V5C2 " V5C2_VERSION " Error", MB_OK | MB_ICONEXCLAMATION);
 #endif
 
         ExitStatus = EXIT_FAILURE;

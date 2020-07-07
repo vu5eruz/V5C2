@@ -19,6 +19,7 @@
 ////////////////////////////////////////////////////////////
 
 
+#include "Background.h"
 #include "Main.h"
 
 #include <glad/glad.h>
@@ -44,11 +45,16 @@ namespace v5c2
         ::gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
         ::glfwSwapInterval(1);
 
+        Background Bkg{};
+        Bkg.SetInnerColor(0.1850f, 0.1850f, 0.1850f);
+        Bkg.SetOuterColor(0.0025f, 0.0025f, 0.0025f);
+        Bkg.Realize(800, 600);
+
         while (!::glfwWindowShouldClose(Window))
         {
             ::glfwPollEvents();
 
-            ::glClear(GL_COLOR_BUFFER_BIT);
+            Bkg.Draw();
 
             ::glfwSwapBuffers(Window);
         }

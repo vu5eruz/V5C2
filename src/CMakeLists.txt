@@ -6,6 +6,7 @@ configure_file(
 )
 
 add_executable(v5c2
+    "Background.cpp"
     "Main.cpp"
 )
 

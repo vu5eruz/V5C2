@@ -11,6 +11,8 @@ add_custom_command(
     COMMAND cmake -E copy_directory "data/images" "${V5C2_BUILD_OUTPUT_DIR}/images"
 
     DEPENDS "${CMAKE_SOURCE_DIR}/data/images/V5c2Icon.png"
+            "${CMAKE_SOURCE_DIR}/data/images/V5c2Logo.png"
+            "${CMAKE_SOURCE_DIR}/data/images/V5c2LogoSplit.png"
 
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )

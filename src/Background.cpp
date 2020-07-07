@@ -75,10 +75,12 @@ namespace v5c2
         ::glGenBuffers(1, &m_Vbo);
         ::glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
         ::glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+        ::glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         ::glGenBuffers(1, &m_Ibo);
         ::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Ibo);
         ::glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+        ::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
         auto CheckShader = [](unsigned int Shader)
         {
@@ -115,6 +117,7 @@ namespace v5c2
         ::glDeleteShader(VertexShader);
 
         ::glBindAttribLocation(m_Program, 0, "aPosition");
+
         m_Program_uInnerColor = ::glGetUniformLocation(m_Program, "uInnerColor");
         m_Program_uOuterColor = ::glGetUniformLocation(m_Program, "uOuterColor");
         m_Program_uCenterCoord = ::glGetUniformLocation(m_Program, "uCenterCoord");
@@ -175,6 +178,11 @@ namespace v5c2
         ::glUniform2fv(m_Program_uCenterCoord, 1, m_CenterCoord);
 
         ::glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        ::glUseProgram(0);
+
+        ::glBindBuffer(GL_ARRAY_BUFFER, 0);
+        ::glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
 }

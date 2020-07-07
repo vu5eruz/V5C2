@@ -6,12 +6,7 @@ configure_file(
 )
 
 add_executable(v5c2
-    "Engine.cpp"
     "Main.cpp"
-    "OpenGL.cpp"
-    "State.cpp"
-    "Stbs.cpp"
-    "Utils.cpp"
 )
 
 add_dependencies(v5c2 v5c2_data)

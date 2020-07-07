@@ -5,7 +5,7 @@ on: [push, pull_request]
 
 jobs:
     build:
-        name: CI — Debug — ${{ matrix.os }}
+        name: Debug — ${{ runner.os }}
         runs-on: ${{ matrix.os }}
 
         steps:
@@ -29,8 +29,8 @@ jobs:
                 
             - uses: actions/upload-artifact@v2
               with:
-                name: V5C2 (Debug) (${{ matrix.os }})
-                path: build/output/V5C2
+                name: V5C2 (Debug) (${{ runner.os }})
+                path: build/output
 
         strategy:
             matrix:

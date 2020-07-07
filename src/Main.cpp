@@ -20,12 +20,9 @@
 
 
 #include "Background.h"
+#include "Engine.h"
 #include "Main.h"
-
-#include <glad/glad.h>
-
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+#include "State.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -36,30 +33,37 @@
 namespace v5c2
 {
 
-    void Main()
+    class MainState final : public State
     {
-        ::glfwInit();
-        ::glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        auto* Window{ ::glfwCreateWindow(800, 600, "V5C2", nullptr, nullptr) };
-        ::glfwMakeContextCurrent(Window);
-        ::gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress));
-        ::glfwSwapInterval(1);
+    public:
 
-        Background Bkg{};
-        Bkg.SetInnerColor(0.1850f, 0.1850f, 0.1850f);
-        Bkg.SetOuterColor(0.0025f, 0.0025f, 0.0025f);
-        Bkg.Realize(800, 600);
-
-        while (!::glfwWindowShouldClose(Window))
+        MainState()
         {
-            ::glfwPollEvents();
-
-            Bkg.Draw();
-
-            ::glfwSwapBuffers(Window);
+            m_Bkg.SetInnerColor(0.1850f, 0.1850f, 0.1850f);
+            m_Bkg.SetOuterColor(0.0025f, 0.0025f, 0.0025f);
+            m_Bkg.Realize(800, 600);
         }
 
-        ::glfwTerminate();
+
+        void HandleDraw() const override
+        {
+            m_Bkg.Draw();
+        }
+
+    private:
+
+        Background m_Bkg{};
+    };
+
+
+    void Main()
+    {
+        Engine::InitManager EngineIM{};
+
+        auto StatePtr{ std::make_unique<MainState>() };
+
+        Engine::SetState(std::move(StatePtr));
+        Engine::Mainloop();
     }
 
 }

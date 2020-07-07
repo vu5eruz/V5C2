@@ -7,7 +7,9 @@ configure_file(
 
 add_executable(v5c2
     "Background.cpp"
+    "Engine.cpp"
     "Main.cpp"
+    "State.cpp"
 )
 
 add_dependencies(v5c2 v5c2_data)

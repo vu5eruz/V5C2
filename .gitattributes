@@ -1,0 +1,7 @@
+# V5C2 — .gitattributes
+
+* text=auto eol=lf
+
+*.png -text -eol
+*.ogg -text -eol
+*.tff -text -eol
